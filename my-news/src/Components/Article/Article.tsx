@@ -1,22 +1,24 @@
-import React from 'react'
-import { ArticleView } from '../../Types/Interfaces'
+import React, { EventHandler } from 'react'
+import { ArticleView, Props } from '../../Types/Interfaces'
 import BookmarkOn from '../../Assets/Bookmark-On.png'
 import BookmarkOff from '../../Assets/Bookmark-Off.png'
-
 //svg is better but png will do for now
 
-export const ArticleComponent = (Article: ArticleView) => {
-    const [bookmark, setBookmark] = React.useState(
-        localStorage.getItem(Article.id) === null
-    )
 
-    function toggleBookmark() : void {
+
+
+export const ArticleComponent = ({Article, toggleBookmark, isFavourite} : Props) => {
+    const [bookmark, setBookmark] : [boolean,React.Dispatch<React.SetStateAction<boolean>>]
+     = React.useState(isFavourite(Article.id));
+
+    function toggleBookmarkLocal() : void {
         if (bookmark) {
-            localStorage.setItem(Article.id, JSON.stringify(Article))
-        } else {
-            localStorage.removeItem(Article.id)
+            toggleBookmark(false,Article);
+        } 
+        else {
+            toggleBookmark(true, Article);
         }
-        setBookmark(!bookmark)
+        setBookmark(prev=>!prev)
     }
 
     return (
@@ -26,7 +28,7 @@ export const ArticleComponent = (Article: ArticleView) => {
                 <span className='category'>{Article.category}</span>
                 <div className='title-section'>
                     <a href={Article.web_url} className='title'>{Article.headline}</a>
-                    <a className='bookmark' onClick={toggleBookmark}>
+                    <a className='bookmark' onClick={toggleBookmarkLocal}>
                        <img src={bookmark ? BookmarkOn : BookmarkOff} alt="bookmark" className='icon' /> 
                     </a>
                 </div>

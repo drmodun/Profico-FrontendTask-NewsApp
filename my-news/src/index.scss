@@ -10,6 +10,16 @@ $image-border: 1px solid #ccc;
     padding: 0;
     box-sizing: border-box;
 }
+
+.body{
+    display: flex;
+    flex-direction: row;
+}
+
+.favourite{
+    margin-left: 24px;
+}
+
 .article {
     width: 321px;
     align-items: flex-start;

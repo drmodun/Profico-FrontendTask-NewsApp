@@ -76,6 +76,12 @@ export interface ArticleView{
     id: string;
 }
 
+export interface Props{
+    Article : ArticleView,
+    toggleBookmark : Function,
+    isFavourite : Function
+};
+
 export const ArticleToArticleView = (article: Article): ArticleView => {
     console.log(article.multimedia);
     const thumbail = article.multimedia.filter((media: Mutimedia) => {console.log(media.subtype);return media.subtype === 'jumbo'});
@@ -88,7 +94,7 @@ export const ArticleToArticleView = (article: Article): ArticleView => {
         pub_date: new Date(article.pub_date),
         author: article.byline.original,
         category: article.news_desk,
-        id: article._id
+        id: article._id,
         //news_desk is the closest thing to a category that I can find
     }
     return articleView;
