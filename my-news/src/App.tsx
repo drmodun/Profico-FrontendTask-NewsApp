@@ -101,10 +101,10 @@ const App: React.FC = () => {
         <div className="content">
           {articles
           .filter((article) => {  
-            if (category === "Home") {
+            if (category === "Favourites") {
               return isFavourite(article.id);
             }
-            return article.category === category || category === "General";
+            return article.category === category || category === "Home";
           }).map((article: ArticleView) =>   (
             <ArticleComponent
               Article={article}

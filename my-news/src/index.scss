@@ -122,7 +122,6 @@ $image-border: 1px solid #ccc;
         padding: 12px;
         border-radius: 4px;
         margin-right: 12px;
-        margin-bottom: 12px;
         justify-content: center;
         align-items: center;
         text-align: center;
@@ -138,23 +137,14 @@ $image-border: 1px solid #ccc;
         padding: 12px;
         border-radius: 4px;
         margin-right: 12px;
-        margin-bottom: 12px;
         justify-content: center;
         align-items: center;
         text-align: center;
         font-family: InterV;
         color: #1D1D1B;
         opacity: 0.5;
-        svg{
-            fill: #1D1D1B;
-        }
         &:hover{
-            color: #ccc;
             opacity: 1;
-            svg{
-                fill:#ccc;
-            }
-
         }
     }
 }

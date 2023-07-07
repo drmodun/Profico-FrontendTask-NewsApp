@@ -13,6 +13,8 @@ import TechnologyOn from "../Assets/svg/TechnologyOn.svg";
 import TechnologyOff from "../Assets/svg/TechnologyOff.svg";
 import HealthOn from "../Assets/svg/HealthOn.svg";
 import HealthOff from "../Assets/svg/HealthOff.svg";
+import BookmarkOn from "../Assets/svg/BookmarkOn.svg";
+import BookmarkOff from "../Assets/svg/BookmarkOff.svg";
 //later add when I have more icons
 
 export const Categories: CategoryInfo[] = [
@@ -22,7 +24,12 @@ export const Categories: CategoryInfo[] = [
         ImageOff: HomeOff
     },
     {
-        Name: "General",
+        Name: "Favourites",
+        ImageOn: BookmarkOn,
+        ImageOff: BookmarkOff
+    },
+    {
+        Name: "Business",
         ImageOn: BusinessOn,
         ImageOff: BusinessOff
     },
