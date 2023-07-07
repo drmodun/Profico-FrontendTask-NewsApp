@@ -79,7 +79,7 @@ export interface ArticleView{
 export interface Props{
     Article : ArticleView,
     toggleBookmark : Function,
-    isFavourite : Function
+    isFavourite : boolean,
 };
 
 export const ArticleToArticleView = (article: Article): ArticleView => {

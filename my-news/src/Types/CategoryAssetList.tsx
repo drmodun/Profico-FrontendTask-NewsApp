@@ -22,7 +22,7 @@ export const Categories: CategoryInfo[] = [
         ImageOff: HomeOff
     },
     {
-        Name: "Business",
+        Name: "General",
         ImageOn: BusinessOn,
         ImageOff: BusinessOff
     },
@@ -42,12 +42,12 @@ export const Categories: CategoryInfo[] = [
         ImageOff: ScienceOff
     },
     {
-        Name: "Technology",
+        Name: "Games",
         ImageOn: TechnologyOn,
         ImageOff: TechnologyOff
     },
     {
-        Name: "Health",
+        Name: "Dining",
         ImageOn: HealthOn,
         ImageOff: HealthOff
     }

@@ -39,7 +39,8 @@ const App: React.FC = () => {
       const articles: ArticleView[] = data.response.docs.map(
         (article: Article) => ArticleToArticleView(article)
       );
-      const categoryNumber: { [key: string]: number } = {};
+      const categoryNumber: { [key: string]: number } = {
+      }
       articles.forEach((article) => {
         if (categoryNumber[article.category] === undefined) {
           categoryNumber[article.category] = 1;
@@ -47,11 +48,9 @@ const App: React.FC = () => {
           categoryNumber[article.category] += 1;
         }
       });
-      console.log(
-        Object.keys(categoryNumber).sort(
-          (a, b) => categoryNumber[b] - categoryNumber[a]
-        )
-      );
+      console.log(Object.keys(categoryNumber).sort(
+        (a, b) => categoryNumber[b] - categoryNumber[a]
+      ));
       setArticles(articles);
     };
     fetchData();
@@ -101,28 +100,20 @@ const App: React.FC = () => {
         </div>
         <div className="content">
           {articles
-            .filter((article) => {
-              return article.category === category || category === "Home";
-            })
-            .map((article: ArticleView) => (
-              <ArticleComponent
-                Article={article}
-                toggleBookmark={toggleBookmark}
-                isFavourite={isFavourite}
-              />
-            ))}
-        </div>
-        {errorMessages !== "" && <div className="error">{errorMessages}</div>}
-        <div className="favourites">
-          <span className="title">Favourites</span>
-          {favouriteArticles.map((article: ArticleView) => (
+          .filter((article) => {  
+            if (category === "Home") {
+              return isFavourite(article.id);
+            }
+            return article.category === category || category === "General";
+          }).map((article: ArticleView) =>   (
             <ArticleComponent
               Article={article}
               toggleBookmark={toggleBookmark}
-              isFavourite={isFavourite}
+              isFavourite={isFavourite(article.id)}
             />
           ))}
         </div>
+        {errorMessages !== "" && <div className="error">{errorMessages}</div>}
       </div>
     </div>
   );

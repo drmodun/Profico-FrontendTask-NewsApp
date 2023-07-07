@@ -1,15 +1,12 @@
-import React, { EventHandler } from 'react'
+import React, { EventHandler, useEffect } from 'react'
 import { ArticleView, Props } from '../../Types/Interfaces'
 import BookmarkOn from '../../Assets/Bookmark-On.png'
 import BookmarkOff from '../../Assets/Bookmark-Off.png'
 //svg is better but png will do for now
 
-
-
-
 export const ArticleComponent = ({Article, toggleBookmark, isFavourite} : Props) => {
     const [bookmark, setBookmark] : [boolean,React.Dispatch<React.SetStateAction<boolean>>]
-     = React.useState(isFavourite(Article.id));
+     = React.useState(isFavourite);
 
     function toggleBookmarkLocal() : void {
         if (bookmark) {
@@ -18,8 +15,11 @@ export const ArticleComponent = ({Article, toggleBookmark, isFavourite} : Props)
         else {
             toggleBookmark(true, Article);
         }
-        setBookmark(prev=>!prev)
     }
+
+    useEffect(() => {
+        setBookmark(isFavourite);
+    }, [isFavourite])
 
     return (
         <div className="article">
