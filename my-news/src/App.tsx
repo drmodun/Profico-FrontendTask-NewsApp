@@ -24,7 +24,7 @@ const App: React.FC = () => {
   const [category, setCategory]: [
     string,
     React.Dispatch<React.SetStateAction<string>>
-  ] = React.useState("World");
+  ] = React.useState("Home");
 
   const [favouriteArticles, setFavouriteArticles] = React.useState(favourites);
 
@@ -38,6 +38,19 @@ const App: React.FC = () => {
       }
       const articles: ArticleView[] = data.response.docs.map(
         (article: Article) => ArticleToArticleView(article)
+      );
+      const categoryNumber: { [key: string]: number } = {};
+      articles.forEach((article) => {
+        if (categoryNumber[article.category] === undefined) {
+          categoryNumber[article.category] = 1;
+        } else {
+          categoryNumber[article.category] += 1;
+        }
+      });
+      console.log(
+        Object.keys(categoryNumber).sort(
+          (a, b) => categoryNumber[b] - categoryNumber[a]
+        )
       );
       setArticles(articles);
     };
@@ -87,13 +100,17 @@ const App: React.FC = () => {
           </div>
         </div>
         <div className="content">
-          {articles.map((article: ArticleView) => (
-            <ArticleComponent
-              Article={article}
-              toggleBookmark={toggleBookmark}
-              isFavourite={isFavourite}
-            />
-          ))}
+          {articles
+            .filter((article) => {
+              return article.category === category || category === "Home";
+            })
+            .map((article: ArticleView) => (
+              <ArticleComponent
+                Article={article}
+                toggleBookmark={toggleBookmark}
+                isFavourite={isFavourite}
+              />
+            ))}
         </div>
         {errorMessages !== "" && <div className="error">{errorMessages}</div>}
         <div className="favourites">
