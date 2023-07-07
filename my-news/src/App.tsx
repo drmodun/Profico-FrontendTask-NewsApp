@@ -6,9 +6,13 @@ import {
   Article,
   ArticleToArticleView,
   ArticleView,
+  CategoryInfo,
   ResponseNYT,
 } from "./Types/Interfaces";
 import { GetFavourites, favourites } from "./Types/LocalFunctions";
+import { Categories } from "./Types/CategoryAssetList";
+import Category from "./Components/Category";
+
 const EmptyArticle: ArticleView[] = [];
 const App: React.FC = () => {
   const [articles, setArticles] = React.useState(EmptyArticle);
@@ -16,6 +20,11 @@ const App: React.FC = () => {
     string,
     React.Dispatch<React.SetStateAction<string>>
   ] = React.useState("");
+
+  const [category, setCategory]: [
+    string,
+    React.Dispatch<React.SetStateAction<string>>
+  ] = React.useState("World");
 
   const [favouriteArticles, setFavouriteArticles] = React.useState(favourites);
 
@@ -35,20 +44,25 @@ const App: React.FC = () => {
     fetchData();
   }, []);
 
-  React.useEffect(() => { 
-    localStorage.setItem("favourites", JSON.stringify(favouriteArticles))
-  }, [favouriteArticles]); 
+  React.useEffect(() => {
+    localStorage.setItem("favourites", JSON.stringify(favouriteArticles));
+  }, [favouriteArticles]);
 
-  function toggleBookmark(isBookmarked: boolean, article: ArticleView): void{
-    isBookmarked ? 
-    setFavouriteArticles(prev=>[...prev, article])
-    : setFavouriteArticles(prev=>
-      prev.filter((articleToRemove)=>{return article.id!==articleToRemove.id}))
+  function toggleBookmark(isBookmarked: boolean, article: ArticleView): void {
+    isBookmarked
+      ? setFavouriteArticles((prev) => [...prev, article])
+      : setFavouriteArticles((prev) =>
+          prev.filter((articleToRemove) => {
+            return article.id !== articleToRemove.id;
+          })
+        );
   }
 
-  function isFavourite(id: string): boolean{
+  function isFavourite(id: string): boolean {
     return (
-      favouriteArticles.filter((article)=>{return id == article.id}).length > 0
+      favouriteArticles.filter((article) => {
+        return id == article.id;
+      }).length > 0
     );
   }
 
@@ -58,16 +72,38 @@ const App: React.FC = () => {
         <span className="title">My News</span>
       </div>
       <div className="body">
+        <div className="category-selector">
+          <span className="title">Categories</span>
+          <div className="categories">
+            {Categories.map((categoryToMap: CategoryInfo) => (
+              <Category
+                Name={categoryToMap.Name}
+                ImageOn={categoryToMap.ImageOn}
+                ImageOff={categoryToMap.ImageOff}
+                setCategory={setCategory}
+                isActive={categoryToMap.Name === category}
+              />
+            ))}
+          </div>
+        </div>
         <div className="content">
           {articles.map((article: ArticleView) => (
-            <ArticleComponent Article={article} toggleBookmark={toggleBookmark} isFavourite={isFavourite}/>
+            <ArticleComponent
+              Article={article}
+              toggleBookmark={toggleBookmark}
+              isFavourite={isFavourite}
+            />
           ))}
         </div>
         {errorMessages !== "" && <div className="error">{errorMessages}</div>}
         <div className="favourites">
           <span className="title">Favourites</span>
           {favouriteArticles.map((article: ArticleView) => (
-            <ArticleComponent Article={article} toggleBookmark={toggleBookmark} isFavourite={isFavourite}/>
+            <ArticleComponent
+              Article={article}
+              toggleBookmark={toggleBookmark}
+              isFavourite={isFavourite}
+            />
           ))}
         </div>
       </div>

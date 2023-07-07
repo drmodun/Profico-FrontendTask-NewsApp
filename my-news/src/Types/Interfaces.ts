@@ -99,3 +99,10 @@ export const ArticleToArticleView = (article: Article): ArticleView => {
     }
     return articleView;
 }
+
+export interface CategoryInfo{
+    Name: string;
+    ImageOn: string;
+    ImageOff: string;
+}
+
