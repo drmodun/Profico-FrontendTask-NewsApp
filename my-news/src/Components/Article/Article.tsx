@@ -21,13 +21,11 @@ export const ArticleComponent = (Article: ArticleView) => {
 
     return (
         <div className="article">
-            <div className="image">
-                <img src={Article.thumbnailURL} alt={Article.headline} />
-            </div>
+            <img src={Article.thumbnailURL} alt={Article.headline} className='image' />
             <div className="content">
                 <span className='category'>{Article.category}</span>
                 <div className='title-section'>
-                    <span className='title'>{Article.headline}</span>
+                    <a href={Article.web_url} className='title'>{Article.headline}</a>
                     <a className='bookmark' onClick={toggleBookmark}>
                        <img src={bookmark ? BookmarkOn : BookmarkOff} alt="bookmark" className='icon' /> 
                     </a>
