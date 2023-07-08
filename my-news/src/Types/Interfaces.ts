@@ -82,6 +82,22 @@ export interface Props{
     isFavourite : boolean,
 };
 
+export interface News{
+    id: string;
+    title: string;
+    url: string;
+    date : Date;
+}
+
+export const ArticleToNews = (article: Article): News => {
+    const news: News = {
+        id: article._id,
+        title: article.headline.main,
+        url: article.web_url,
+        date: new Date(article.pub_date),
+    }
+    return news;
+}
 export const ArticleToArticleView = (article: Article): ArticleView => {
     console.log(article.multimedia);
     const thumbail = article.multimedia.filter((media: Mutimedia) => {console.log(media.subtype);return media.subtype === 'jumbo'});
@@ -99,6 +115,7 @@ export const ArticleToArticleView = (article: Article): ArticleView => {
     }
     return articleView;
 }
+
 
 export interface CategoryInfo{
     Name: string;

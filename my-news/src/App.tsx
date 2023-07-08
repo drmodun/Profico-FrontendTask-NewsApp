@@ -1,21 +1,25 @@
-import "./index.scss";
 import React from "react";
 import ArticleComponent from "./Components/Article";
 import { getNYTArchiveData } from "./APIActions/NYTApiActions";
 import {
   Article,
   ArticleToArticleView,
+  ArticleToNews,
   ArticleView,
   CategoryInfo,
+  News,
   ResponseNYT,
 } from "./Types/Interfaces";
 import { GetFavourites, favourites } from "./Types/LocalFunctions";
 import { Categories } from "./Types/CategoryAssetList";
 import Category from "./Components/Category";
+import LatestNews from "./Components/LatestNews";
 
 const EmptyArticle: ArticleView[] = [];
+const EmptyNews: News[] = [];
 const App: React.FC = () => {
   const [articles, setArticles] = React.useState(EmptyArticle);
+  const [news, setNews] = React.useState(EmptyNews);
   const [errorMessages, setErrorMessages]: [
     string,
     React.Dispatch<React.SetStateAction<string>>
@@ -39,19 +43,11 @@ const App: React.FC = () => {
       const articles: ArticleView[] = data.response.docs.map(
         (article: Article) => ArticleToArticleView(article)
       );
-      const categoryNumber: { [key: string]: number } = {
-      }
-      articles.forEach((article) => {
-        if (categoryNumber[article.category] === undefined) {
-          categoryNumber[article.category] = 1;
-        } else {
-          categoryNumber[article.category] += 1;
-        }
-      });
-      console.log(Object.keys(categoryNumber).sort(
-        (a, b) => categoryNumber[b] - categoryNumber[a]
-      ));
+      const news: News[] = data.response.docs.map(
+        (article: Article) => ArticleToNews(article)
+      );
       setArticles(articles);
+      setNews(news);
     };
     fetchData();
   }, []);
@@ -105,7 +101,11 @@ const App: React.FC = () => {
               return isFavourite(article.id);
             }
             return article.category === category || category === "Home";
-          }).map((article: ArticleView) =>   (
+          })
+          .sort((a, b) => {
+            return a.pub_date > b.pub_date ? -1 : 1;
+          })
+          .map((article: ArticleView) =>   (
             <ArticleComponent
               Article={article}
               toggleBookmark={toggleBookmark}
@@ -113,6 +113,7 @@ const App: React.FC = () => {
             />
           ))}
         </div>
+        <LatestNews NewsList={news} />
         {errorMessages !== "" && <div className="error">{errorMessages}</div>}
       </div>
     </div>
