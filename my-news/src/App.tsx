@@ -47,7 +47,11 @@ const App: React.FC = () => {
         (article: Article) => ArticleToNews(article)
       );
       setArticles(articles);
-      setNews(news);
+      setNews(
+        news.sort((a, b) => {
+          return a.date > b.date ? -1 : 1;
+        })
+        );
     };
     fetchData();
   }, []);
@@ -78,6 +82,9 @@ const App: React.FC = () => {
     <div className="App">
       <div className="header">
         <span className="title">My News</span>
+      </div>
+      <div className="">
+
       </div>
       <div className="body">
         <div className="category-selector">
@@ -113,8 +120,9 @@ const App: React.FC = () => {
             />
           ))}
         </div>
-        <LatestNews NewsList={news} />
-        {errorMessages !== "" && <div className="error">{errorMessages}</div>}
+        <LatestNews NewsList={news}
+            />
+        {errorMessages !== "" && <div className="error">{errorMessages + "if this is your first time opening the app, you might need to get temporary authorization from the proxy server, just visit the page "}</div>}
       </div>
     </div>
   );

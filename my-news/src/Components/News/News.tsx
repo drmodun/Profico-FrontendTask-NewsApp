@@ -6,7 +6,10 @@ import { News } from "../../Types/Interfaces";
 export const NewsView = (News: News) => {
   return (
     <div className="news">
-      <div className="date">{News.date.getTime()}</div>
+      <div className="date">{News.date.getHours() + ":" 
+      + (String(News.date.getMinutes()).length > 1 ?
+        News.date.getMinutes() : "0" + News.date.getMinutes())
+     }</div>
       <a className="title" href={News.url}>
         {News.title}
       </a>
