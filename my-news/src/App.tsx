@@ -87,14 +87,23 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
+      <nav>
+        <div className="nav-container">
+            <span className="nav-main">Make MyNews your homepage</span>
+            <span className="nav-sub">Every day discover what's trending on the internet</span>
+            <button className="nav-cancel">No thanks</button>
+            <button className="nav-button">GET</button>
+        </div>
+
+      </nav>
       <div className="container">
         <div className="header">
           <img src={MyNews} alt="MyNews" />
           <div className="search">
-            <img src={Search} alt="Search" />
+            <img src={Search} alt="Search news" />
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Search news"
               onChange={(e) => setSearch(e.target.value)}
               value={search}
             />
@@ -102,6 +111,9 @@ const App: React.FC = () => {
               <p>Search</p>
             </button>
           </div>
+        </div>
+        <div className="divider">
+          
         </div>
         <div className="body">
           <div className="category-selector">
