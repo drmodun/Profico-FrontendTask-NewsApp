@@ -43,15 +43,15 @@ const App: React.FC = () => {
       const articles: ArticleView[] = data.response.docs.map(
         (article: Article) => ArticleToArticleView(article)
       );
-      const news: News[] = data.response.docs.map(
-        (article: Article) => ArticleToNews(article)
+      const news: News[] = data.response.docs.map((article: Article) =>
+        ArticleToNews(article)
       );
       setArticles(articles);
       setNews(
         news.sort((a, b) => {
           return a.date > b.date ? -1 : 1;
         })
-        );
+      );
     };
     fetchData();
   }, []);
@@ -83,9 +83,7 @@ const App: React.FC = () => {
       <div className="header">
         <span className="title">My News</span>
       </div>
-      <div className="">
-
-      </div>
+      <div className=""></div>
       <div className="body">
         <div className="category-selector">
           <span className="title">Categories</span>
@@ -103,26 +101,30 @@ const App: React.FC = () => {
         </div>
         <div className="content">
           {articles
-          .filter((article) => {  
-            if (category === "Favourites") {
-              return isFavourite(article.id);
-            }
-            return article.category === category || category === "Home";
-          })
-          .sort((a, b) => {
-            return a.pub_date > b.pub_date ? -1 : 1;
-          })
-          .map((article: ArticleView) =>   (
-            <ArticleComponent
-              Article={article}
-              toggleBookmark={toggleBookmark}
-              isFavourite={isFavourite(article.id)}
-            />
-          ))}
+            .filter((article) => {
+              if (category === "Favourites") {
+                return isFavourite(article.id);
+              }
+              return article.category === category || category === "Home";
+            })
+            .sort((a, b) => {
+              return a.pub_date > b.pub_date ? -1 : 1;
+            })
+            .map((article: ArticleView) => (
+              <ArticleComponent
+                Article={article}
+                toggleBookmark={toggleBookmark}
+                isFavourite={isFavourite(article.id)}
+              />
+            ))}
         </div>
-        <LatestNews NewsList={news}
-            />
-        {errorMessages !== "" && <div className="error">{errorMessages + "if this is your first time opening the app, you might need to get temporary authorization from the proxy server, just visit the page "}</div>}
+        <LatestNews NewsList={news} />
+        {errorMessages !== "" && (
+          <div className="error">
+            {errorMessages +
+              "if this is your first time opening the app, you might need to get temporary authorization from the proxy server, just visit the page "}
+          </div>
+        )}
       </div>
     </div>
   );

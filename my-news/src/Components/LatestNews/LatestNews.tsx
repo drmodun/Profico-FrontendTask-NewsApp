@@ -13,7 +13,7 @@ export const LatestNews = ({ NewsList }: LatestNewsProps) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   //currently the initial load is 500 articles if not more, so I consider it sufficient enough, but later I might make another call
-  
+
 
   const pageSize = 20; 
 
@@ -42,13 +42,16 @@ export const LatestNews = ({ NewsList }: LatestNewsProps) => {
     const scrollTop = container.scrollTop;
     const scrollHeight = container.scrollHeight;
     const clientHeight = container.clientHeight;
-    if (scrollTop + clientHeight >= scrollHeight && !loading) {
+    console.log(scrollTop, scrollHeight, clientHeight);
+    if (scrollTop + clientHeight >= scrollHeight - 100) {
       setPage((prev) => prev + 1);
     }
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    const object = document.getElementById("container")
+    if (!object) return;
+    object.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -58,7 +61,7 @@ export const LatestNews = ({ NewsList }: LatestNewsProps) => {
         <img src={LatestNewsSvg} alt="" />
         <span>Latest News</span>
       </div>
-      <div ref={containerRef} className="news-container">
+      <div id="container" ref={containerRef} className="news-container">
         {selectedNews.map((news) => (
           <NewsView {...news} />
         ))}
