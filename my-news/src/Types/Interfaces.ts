@@ -87,6 +87,7 @@ export interface News{
     title: string;
     url: string;
     date : Date;
+    category: string;
 }
 
 export const ArticleToNews = (article: Article): News => {
@@ -95,12 +96,12 @@ export const ArticleToNews = (article: Article): News => {
         title: article.headline.main,
         url: article.web_url,
         date: new Date(article.pub_date),
+        category: article.news_desk,
     }
     return news;
 }
 export const ArticleToArticleView = (article: Article): ArticleView => {
-    console.log(article.multimedia);
-    const thumbail = article.multimedia.filter((media: Mutimedia) => {console.log(media.subtype);return media.subtype === 'jumbo'});
+    const thumbail = article.multimedia.filter((media: Mutimedia) => {return media.subtype === 'jumbo'});
     const thumbnailURL: string = thumbail.length ? "https://static01.nyt.com/" + thumbail[0].url : "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png";
     const articleView: ArticleView = {
         web_url: article.web_url,

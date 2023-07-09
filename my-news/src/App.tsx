@@ -26,6 +26,7 @@ const EmptyNews: News[] = [];
 const App: React.FC = () => {
   const [articles, setArticles] = React.useState(EmptyArticle);
   const [news, setNews] = React.useState(EmptyNews);
+  const [currentMonth, setCurrentMonth] = React.useState(0);
   const [search, setSearch]: [
     string,
     React.Dispatch<React.SetStateAction<string>>
@@ -53,8 +54,35 @@ const App: React.FC = () => {
 
   const [favouriteArticles, setFavouriteArticles] = React.useState(favourites);
 
+
+  function getMoreNews (): void {
+    const getMonth = new Date().getMonth();
+    const fetchData = async (): Promise<void> => {
+      console.log(getMonth-currentMonth);
+      const data: ResponseNYT | null = await getNYTArchiveData(getMonth-currentMonth);
+      setCurrentMonth(prev=>prev+1);
+      if (data === null) {
+        return;
+      }
+      const articles: ArticleView[] = data.response.docs.map(
+        (article: Article) => ArticleToArticleView(article)
+      );
+      const news: News[] = data.response.docs.map((article: Article) =>
+        ArticleToNews(article)
+      );
+      setArticles((prev)=>[...prev,...articles]);
+      setNews((prev)=>[...prev,...news]);
+    };
+    fetchData();
+  }
+
+
   React.useEffect(() => {
     const fetchData = async (): Promise<void> => {
+      if (currentMonth > 12) {
+        //I think it would be too much to load articles before 2023
+        return;
+      }
       const data: ResponseNYT | null = await getNYTArchiveData();
       console.log(data);
       if (data === null) {
@@ -121,7 +149,13 @@ const App: React.FC = () => {
                 alt="MyNews"
               />
             </div>
-            <button className="menu" onClick={() => setMenu((prev) => !prev)}>
+            <button
+              className="menu"
+              onClick={() => {
+                setSelected(!menu ? "Menu" : "Featured");
+                setMenu((prev) => !prev);
+              }}
+            >
               <img src={menu ? MenuOn : MenuOff} alt="Menu" />
             </button>
           </div>
@@ -140,7 +174,8 @@ const App: React.FC = () => {
         </div>
         <div className="divider"></div>
         <div className="body">
-          <div className="selector">
+          { selected === "Featured" || selected === "Latest" ? (
+            <div className="selector">
             <button
               onClick={() => setSelected("Featured")}
               className={selected === "Featured" ? "active-option" : "option"}
@@ -153,52 +188,81 @@ const App: React.FC = () => {
             >
               Latest
             </button>
-          </div>
-          <div className="category-selector">
-            <div className="categories">
-              {Categories.map((categoryToMap: CategoryInfo) => (
-                <Category
-                  Name={categoryToMap.Name}
-                  ImageOn={categoryToMap.ImageOn}
-                  ImageOff={categoryToMap.ImageOff}
-                  setCategory={setCategory}
-                  isActive={categoryToMap.Name === category}
-                />
-              ))}
-            </div>
-          </div>
-          <div className="article-list-container">
-            <span>News</span>
-            <div className="article-list">
-              {articles
-                .filter((article) => {
-                  if (category === "Favourites") {
-                    return isFavourite(article.id);
-                  }
-                  if (category === "Today") {
-                    return article.pub_date.getDay() === new Date().getDay();
-                  }
-                  return (
-                    (article.category === category || category === "Home") &&
-                    (article.headline
-                      .toLowerCase()
-                      .includes(search.toLowerCase()) ||
-                      search === "")
-                  );
-                })
-                .splice(0, articles.length > 40 ? 40 : articles.length)
-                .sort((a, b) => {
-                  return a.pub_date > b.pub_date ? -1 : 1;
-                })
-                .map((article: ArticleView) => (
-                  <ArticleComponent
-                    Article={article}
-                    toggleBookmark={toggleBookmark}
-                    isFavourite={isFavourite(article.id)}
+          </div>) : null}
+          {selected === "Menu" || selected === "All" ? (
+            <div className="category-selector">
+              <div className="categories">
+                {Categories.map((categoryToMap: CategoryInfo) => (
+                  <Category
+                    Name={categoryToMap.Name}
+                    ImageOn={categoryToMap.ImageOn}
+                    ImageOff={categoryToMap.ImageOff}
+                    setCategory={setCategory}
+                    isActive={categoryToMap.Name === category}
                   />
                 ))}
-              <LatestNews NewsList={news} />
+              </div>
             </div>
+          ) : null}
+          <div className="article-list-container">
+            <span>News</span>
+            {selected === "Featured" || selected === "All" ? (
+              <div className="article-list">
+                {articles
+                  .filter((article) => {
+                    if (category === "Favourites") {
+                      return isFavourite(article.id);
+                    }
+                    if (category === "Today") {
+                      return article.pub_date.getDay() === new Date().getDay();
+                    }
+                    return (
+                      (article.category === category || category === "Home") &&
+                      (article.headline
+                        .toLowerCase()
+                        .includes(search.toLowerCase()) ||
+                        search === "")
+                    );
+                  })
+                  .splice(0, articles.length > 40 ? 40 : articles.length)
+                  .sort((a, b) => {
+                    return a.pub_date > b.pub_date ? -1 : 1;
+                  })
+                  .map((article: ArticleView) => (
+                    <ArticleComponent
+                      Article={article}
+                      toggleBookmark={toggleBookmark}
+                      isFavourite={isFavourite(article.id)}
+                    />
+                  ))}
+                {selected === "All" && <LatestNews NewsList={news
+                .filter((article) => {
+                  if (category === "Today") {
+                    return article.date.getDay() === new Date().getDay();
+                  }
+                  return (
+                    (article.category === category || category === "Home" || category === "Favourites" || category === "Today")
+                  );
+                })
+                } getMoreNews={getMoreNews} 
+                category={category}
+                />}
+              </div>
+            ) : selected === "Latest" ? (
+              <LatestNews NewsList={news
+                .filter((article) => {
+                  if (category === "Today") {
+                    return article.date.getDay() === new Date().getDay();
+                  }
+                  return (
+                    (article.category === category || category === "Home" || category === "Favourites" || category === "Today")
+                  );
+                })
+                }
+                getMoreNews={getMoreNews}
+                category={category}
+              />
+            ) : null}
           </div>
         </div>
         {errorMessages !== "" && (

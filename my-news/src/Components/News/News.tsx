@@ -13,7 +13,7 @@ export const NewsView = (News: News) => {
       <a className="title" href={News.url}>
         {News.title}
       </a>
-      <div className="divider"></div>
+      <div className="divider-news"></div>
     </div>
   );
 };

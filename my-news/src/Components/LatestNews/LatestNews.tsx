@@ -6,26 +6,45 @@ import NewsView from "../News";
 
 interface LatestNewsProps {
   NewsList: News[];
+  getMoreNews: () => void;
+  category: string;
 }
-export const LatestNews = ({ NewsList }: LatestNewsProps) => {
+export const LatestNews = ({ NewsList, getMoreNews, category }: LatestNewsProps) => {
   const [selectedNews, setSelectedNews] = useState<News[]>([]);
   const [page, setPage] = useState<number>(1);
+  const [maxPage, setMaxPage] = useState<number>(NewsList.length ? NewsList.length / 20 : 2);
   const [loading, setLoading] = useState<boolean>(false);
+  
 
   //currently the initial load is 500 articles if not more, so I consider it sufficient enough, but later I might make another call
 
+  useEffect(() => {
+    setPage(1);
+    setSelectedNews([]);
+    setMaxPage(Math.floor(NewsList.length / 20));
+    setLoading(false);
+  }, [category]);
 
   const pageSize = 20; 
 
-    const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     loadNews();
+    setMaxPage(Math.floor(NewsList.length / 20));
+    setLoading(false);
   }, [NewsList]);
+
 
   useEffect(() => {
     loadNews();
   }, [page]);
+
+  useEffect(() => {
+    if (page >= maxPage && !loading)
+      setLoading(true);
+  }, [page]);
+
 
   const loadNews = () => {
     console.log("loading news");
@@ -65,6 +84,7 @@ export const LatestNews = ({ NewsList }: LatestNewsProps) => {
         {selectedNews.map((news) => (
           <NewsView {...news} />
         ))}
+        {loading && <div className="loading">Loading...</div>}
       </div>
       <a className="all-news" href="https://www.nytimes.com/">
         <span>See all news</span>
