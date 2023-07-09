@@ -1,6 +1,7 @@
 import React from "react";
 import ArticleComponent from "./Components/Article";
 import { getNYTArchiveData } from "./APIActions/NYTApiActions";
+
 import {
   Article,
   ArticleToArticleView,
@@ -10,6 +11,7 @@ import {
   News,
   ResponseNYT,
 } from "./Types/Interfaces";
+
 import { GetFavourites, favourites } from "./Types/LocalFunctions";
 import { Categories } from "./Types/CategoryAssetList";
 import Category from "./Components/Category";
@@ -89,12 +91,13 @@ const App: React.FC = () => {
     <div className="App">
       <nav>
         <div className="nav-container">
-            <span className="nav-main">Make MyNews your homepage</span>
-            <span className="nav-sub">Every day discover what's trending on the internet</span>
-            <button className="nav-cancel">No thanks</button>
-            <button className="nav-button">GET</button>
+          <span className="nav-main">Make MyNews your homepage</span>
+          <span className="nav-sub">
+            Every day discover what's trending on the internet
+          </span>
+          <button className="nav-cancel">No thanks</button>
+          <button className="nav-button">GET</button>
         </div>
-
       </nav>
       <div className="container">
         <div className="header">
@@ -112,12 +115,9 @@ const App: React.FC = () => {
             </button>
           </div>
         </div>
-        <div className="divider">
-          
-        </div>
+        <div className="divider"></div>
         <div className="body">
           <div className="category-selector">
-            <span className="title">Categories</span>
             <div className="categories">
               {Categories.map((categoryToMap: CategoryInfo) => (
                 <Category
@@ -130,39 +130,43 @@ const App: React.FC = () => {
               ))}
             </div>
           </div>
-          <div className="content">
-            {articles
-              .filter((article) => {
-                if (category === "Favourites") {
-                  return isFavourite(article.id);
-                }
-                return (
-                  (article.category === category || category === "Home") &&
-                  (article.headline
-                    .toLowerCase()
-                    .includes(search.toLowerCase()) ||
-                    search === "")
-                );
-              })
-              .sort((a, b) => {
-                return a.pub_date > b.pub_date ? -1 : 1;
-              })
-              .map((article: ArticleView) => (
-                <ArticleComponent
-                  Article={article}
-                  toggleBookmark={toggleBookmark}
-                  isFavourite={isFavourite(article.id)}
-                />
-              ))}
-          </div>
-          <LatestNews NewsList={news} />
-          {errorMessages !== "" && (
-            <div className="error">
-              {errorMessages +
-                "if this is your first time opening the app, you might need to get temporary authorization from the proxy server, just visit the page https://cors-anywhere.herokuapp.com/corsdemo"}
+          <div className="article-list-container">
+            <span>News</span>
+            <div className="article-list">
+              {articles
+                .filter((article) => {
+                  if (category === "Favourites") {
+                    return isFavourite(article.id);
+                  }
+                  return (
+                    (article.category === category || category === "Home") &&
+                    (article.headline
+                      .toLowerCase()
+                      .includes(search.toLowerCase()) ||
+                      search === "")
+                  );
+                })
+                .splice(0, articles.length > 40 ? 40 : articles.length)
+                .sort((a, b) => {
+                  return a.pub_date > b.pub_date ? -1 : 1;
+                })
+                .map((article: ArticleView) => (
+                  <ArticleComponent
+                    Article={article}
+                    toggleBookmark={toggleBookmark}
+                    isFavourite={isFavourite(article.id)}
+                  />
+                ))}
+              <LatestNews NewsList={news} />
             </div>
-          )}
+          </div>
         </div>
+        {errorMessages !== "" && (
+          <div className="error">
+            {errorMessages +
+              "if this is your first time opening the app, you might need to get temporary authorization from the proxy server, just visit the page https://cors-anywhere.herokuapp.com/corsdemo"}
+          </div>
+        )}
       </div>
     </div>
   );

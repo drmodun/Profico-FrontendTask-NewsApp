@@ -3,6 +3,7 @@ $font-color: #000;
 $category-color: #1e71bb;
 $author-color: #1d1d1b;
 $image-border: 1px solid #ccc;
+$divider-color: #979797;
 
 * {
     margin: 0;
@@ -17,24 +18,34 @@ $image-border: 1px solid #ccc;
 
 .container {
     width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     background-color: #f4f5f8;
+    height: 100%;
     padding-left: 12.1vw;
+    padding-right: 12.1vw;
 }
 
 .favourite {
     margin-left: 24px;
 }
 
+.article-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(321px, 1fr));
+    grid-gap: 22px;
+    gap: 22px;
+    & > .latest-news {
+        grid-column: 3 / 3;
+        grid-row: 1 / 3;
+    }
+}
+
 .article {
     width: 321px;
     align-items: flex-start;
-    margin-right: 23px;
-    height: 274px;
+    height: 252px;
     display: flex;
-    margin-bottom: 22px;
     flex-direction: column;
     .image {
         width: 100%;
@@ -47,10 +58,10 @@ $image-border: 1px solid #ccc;
 
     .category {
         color: $category-color;
-        font-family: InterV_Bold;
+        font-family: Inter;
         font-size: 10px;
-        font-style: normal;
-        font-weight: 400;
+        min-height: 16px;
+        font-weight: 700;
         line-height: 16px;
         text-transform: uppercase;
     }
@@ -65,10 +76,11 @@ $image-border: 1px solid #ccc;
         position: relative;
         background-color: $background-color;
         border-radius: 4px;
-        margin-top: -50px;
+        margin-top: -72px;
         height: 112px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         .title-section {
+            min-height: 40px;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
@@ -81,9 +93,9 @@ $image-border: 1px solid #ccc;
             }
             .title {
                 color: $font-color;
-                font-family: InterV_Medium;
+                font-family: Inter;
                 font-size: 16px;
-                font-weight: 400;
+                font-weight: 500;
                 line-height: 20px;
                 margin-top: 2px;
                 text-decoration: none;
@@ -100,9 +112,11 @@ $image-border: 1px solid #ccc;
 
         .author {
             color: $author-color;
-            font-family: InterV;
+            font-family: Inter;
             font-size: 12px;
+            min-height: 15px;
             font-weight: 400;
+            margin-top: 12px;
             justify-self: flex-end;
         }
     }
@@ -112,7 +126,7 @@ $image-border: 1px solid #ccc;
     display: flex;
     flex-direction: column;
     margin-top: 24px;
-    margin-right: 25px;
+    margin-right: 1.73vw;
     font-size: 10px;
     img {
         width: 20px;
@@ -130,9 +144,10 @@ $image-border: 1px solid #ccc;
         border-radius: 4px;
         margin-right: 12px;
         justify-content: center;
+        font-weight: 500;
         align-items: center;
         text-align: center;
-        font-family: InterV;
+        font-family: Inter;
     }
 
     .category-off {
@@ -146,7 +161,8 @@ $image-border: 1px solid #ccc;
         justify-content: center;
         align-items: center;
         text-align: center;
-        font-family: InterV;
+        font-family: Inter;
+        font-weight: 500;
         color: #1d1d1b;
         opacity: 0.5;
         &:hover {
@@ -160,18 +176,18 @@ $image-border: 1px solid #ccc;
     flex-direction: column;
     .date {
         color: #1e71bb;
-        font-family: InterV_Bold;
+        font-family: Inter;
         font-size: 10px;
-        font-weight: 400;
+        font-weight: 800;
         line-height: 16px;
         text-transform: uppercase;
     }
     .title {
         color: #000;
-        font-family: InterV_Medium;
+        font-family: Inter;
         font-size: 16px;
         font-style: normal;
-        font-weight: 400;
+        font-weight: 500;
         line-height: 20px;
         text-decoration: none;
         transition: color 0.2s ease-in-out;
@@ -193,8 +209,8 @@ $image-border: 1px solid #ccc;
 
 .latest-news {
     padding: 15px;
-    width: 261px;
-    height: 505px;
+    width: 321px;
+    height: 529px;
     background-color: #fff;
     display: flex;
     flex-direction: column;
@@ -212,9 +228,9 @@ $image-border: 1px solid #ccc;
         margin-bottom: 12px;
         span {
             display: flex;
-            font-weight: 400;
+            font-weight: 500;
             line-height: 20px;
-            font-family: InterV_Medium;
+            font-family: Inter;
             font-size: 16px;
             font-style: normal;
         }
@@ -260,9 +276,9 @@ $image-border: 1px solid #ccc;
         }
         span {
             color: #1e71bb;
-            font-family: InterV_Medium;
+            font-family: Inter;
             font-size: 14px;
-            font-weight: 400;
+            font-weight: 500;
             line-height: 20px;
             text-decoration: none;
             transition: color 0.2s ease-in-out;
@@ -306,14 +322,14 @@ $image-border: 1px solid #ccc;
             outline: none;
             width: 44.2vw;
             height: 100%;
-            font-family: InterV;
+            font-family: Inter;
             font-size: 15px;
             font-weight: 400;
             line-height: 20px;
             color: #1d1d1b;
             &::placeholder {
                 color: #1d1d1b;
-                font-family: InterV;
+                font-family: Inter;
                 font-size: 15px;
                 font-weight: 400;
                 line-height: 20px;
@@ -329,7 +345,7 @@ $image-border: 1px solid #ccc;
             margin: 5px;
             border: none;
             outline: none;
-            font-family: InterV;
+            font-family: Inter;
             text-transform: uppercase;
             &:hover {
                 background: #d11e1e;
@@ -357,14 +373,14 @@ nav {
         align-items: center;
         .nav-main {
             color: #fff;
-            font-family: InterV_Bold;
+            font-family: Inter;
             font-size: 16px;
-            font-weight: 400;
+            font-weight: 800;
             line-height: 21px;
         }
         .nav-sub {
             color: #fff;
-            font-family: InterV;
+            font-family: Inter;
             font-size: 14px;
             font-weight: 400;
             line-height: 21px;
@@ -373,9 +389,9 @@ nav {
         .nav-cancel {
             color: #fff;
             text-align: center;
-            font-family: InterV_Bold;
+            font-family: Inter;
             font-size: 14px;
-            font-weight: 400;
+            font-weight: 600;
             line-height: 20px;
             margin-left: 22vw;
             border: none;
@@ -388,33 +404,46 @@ nav {
         .nav-button {
             border-radius: 8px;
             background: #fff;
-            width: 	69px;
+            width: 69px;
             height: 40px;
             margin-left: 24px;
             border: none;
             outline: none;
-            font-family: InterV;
-            color: #1D1D1B;
+            font-family: Inter;
+            color: #1d1d1b;
             text-align: center;
-            font-family: InterV_Bold;
+            font-family: Inter;
             font-size: 14px;
-            font-weight: 400;
+            font-weight: 800;
             line-height: 20px;
-            text-transform: uppercase;       
+            text-transform: uppercase;
             &:hover {
                 background: #f4f5f8;
             }
             &:active {
                 background: #e4e5e8;
-            } 
+            }
         }
     }
 }
-.divider{
+.divider {
     width: 76vw;
     height: 1px;
     background: #979797;
     margin-bottom: 24px;
     opacity: 0.1;
+}
+.article-list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    & > span {
+        color: #1d1d1b;
+        font-family: Inter;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 24px;
+        margin-bottom: 16px;
+    }
 }
 //add later for mobile
