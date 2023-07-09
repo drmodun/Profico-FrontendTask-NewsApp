@@ -109,6 +109,29 @@ const App: React.FC = () => {
     localStorage.setItem("favourites", JSON.stringify(favouriteArticles));
   }, [favouriteArticles]);
 
+  React.useEffect(() => { 
+    setSelected(window.innerWidth > 900 ? "All" : "Menu");
+    setMenu(window.innerWidth > 900 ? false : true);
+  }
+  , []);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setSelected(window.innerWidth > 900 ? "All" : "Menu");
+      setMenu(window.innerWidth > 900 ? false : true);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+
+
+  }, []);
+
+
+
   function toggleBookmark(isBookmarked: boolean, article: ArticleView): void {
     isBookmarked
       ? setFavouriteArticles((prev) => [...prev, article])
@@ -211,10 +234,16 @@ const App: React.FC = () => {
                 {articles
                   .filter((article) => {
                     if (category === "Favourites") {
-                      return isFavourite(article.id);
+                      return isFavourite(article.id) && (article.headline
+                        .toLowerCase()
+                        .includes(search.toLowerCase()) ||
+                        search === "")                      ;
                     }
                     if (category === "Today") {
-                      return article.pub_date.getDay() === new Date().getDay();
+                      return article.pub_date.getDay() === new Date().getDay() && (article.headline
+                        .toLowerCase()
+                        .includes(search.toLowerCase()) ||
+                        search === "")
                     }
                     return (
                       (article.category === category || category === "Home") &&
