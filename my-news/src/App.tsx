@@ -18,6 +18,8 @@ import Category from "./Components/Category";
 import LatestNews from "./Components/LatestNews";
 import MyNews from "./Assets/svg/MyNews.svg";
 import Search from "./Assets/svg/Search.svg";
+import MenuOn from "./Assets/svg/MenuOn.svg";
+import MenuOff from "./Assets/svg/MenuOff.svg";
 
 const EmptyArticle: ArticleView[] = [];
 const EmptyNews: News[] = [];
@@ -29,6 +31,11 @@ const App: React.FC = () => {
     React.Dispatch<React.SetStateAction<string>>
   ] = React.useState("");
 
+  const [menu, setMenu]: [
+    boolean,
+    React.Dispatch<React.SetStateAction<boolean>>
+  ] = React.useState(false);
+
   const [errorMessages, setErrorMessages]: [
     string,
     React.Dispatch<React.SetStateAction<string>>
@@ -38,6 +45,11 @@ const App: React.FC = () => {
     string,
     React.Dispatch<React.SetStateAction<string>>
   ] = React.useState("Home");
+
+  const [selected, setSelected]: [
+    string,
+    React.Dispatch<React.SetStateAction<string>>
+  ] = React.useState("All");
 
   const [favouriteArticles, setFavouriteArticles] = React.useState(favourites);
 
@@ -101,7 +113,18 @@ const App: React.FC = () => {
       </nav>
       <div className="container">
         <div className="header">
-          <img src={MyNews} alt="MyNews" />
+          <div className="header-top">
+            <div className={menu ? "active-container" : "inactive-container"}>
+              <img
+                src={MyNews}
+                className={menu ? "active-logo" : "logo"}
+                alt="MyNews"
+              />
+            </div>
+            <button className="menu" onClick={() => setMenu((prev) => !prev)}>
+              <img src={menu ? MenuOn : MenuOff} alt="Menu" />
+            </button>
+          </div>
           <div className="search">
             <img src={Search} alt="Search news" />
             <input
@@ -117,6 +140,20 @@ const App: React.FC = () => {
         </div>
         <div className="divider"></div>
         <div className="body">
+          <div className="selector">
+            <button
+              onClick={() => setSelected("Featured")}
+              className={selected === "Featured" ? "active-option" : "option"}
+            >
+              Featured
+            </button>
+            <button
+              onClick={() => setSelected("Latest")}
+              className={selected === "Latest" ? "active-option" : "option"}
+            >
+              Latest
+            </button>
+          </div>
           <div className="category-selector">
             <div className="categories">
               {Categories.map((categoryToMap: CategoryInfo) => (
@@ -138,7 +175,7 @@ const App: React.FC = () => {
                   if (category === "Favourites") {
                     return isFavourite(article.id);
                   }
-                  if (category === "Today"){
+                  if (category === "Today") {
                     return article.pub_date.getDay() === new Date().getDay();
                   }
                   return (
@@ -168,7 +205,9 @@ const App: React.FC = () => {
           <div className="error">
             {errorMessages +
               "if this is your first time opening the app, you might need to get temporary authorization from the proxy server, just visit the page "}
-              <a href="https://cors-anywhere.herokuapp.com/corsdemo">https://cors-anywhere.herokuapp.com/corsdemo</a>
+            <a href="https://cors-anywhere.herokuapp.com/corsdemo">
+              https://cors-anywhere.herokuapp.com/corsdemo
+            </a>
           </div>
         )}
       </div>
