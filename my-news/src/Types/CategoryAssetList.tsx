@@ -15,6 +15,14 @@ import HealthOn from "../Assets/svg/HealthOn.svg";
 import HealthOff from "../Assets/svg/HealthOff.svg";
 import BookmarkOn from "../Assets/svg/BookmarkOn.svg";
 import BookmarkOff from "../Assets/svg/BookmarkOff.svg";
+import BookGuideOn from "../Assets/svg/BookGuideOn.svg";
+import BookGuideOff from "../Assets/svg/BookGuideOff.svg";
+import GameOn from "../Assets/svg/GamesOn.svg";
+import GameOff from "../Assets/svg/GamesOff.svg";
+import WeatherOn from "../Assets/svg/WeatherOn.svg";
+import WeatherOff from "../Assets/svg/WeatherOff.svg";
+import TodayOn from "../Assets/svg/TodayOn.svg";
+import TodayOff from "../Assets/svg/TodayOff.svg";
 //later add when I have more icons
 
 export const Categories: CategoryInfo[] = [
@@ -27,6 +35,11 @@ export const Categories: CategoryInfo[] = [
         Name: "Favourites",
         ImageOn: BookmarkOn,
         ImageOff: BookmarkOff
+    },
+    {
+        Name: "Today",
+        ImageOn: TodayOn,
+        ImageOff: TodayOff
     },
     {
         Name: "Business",
@@ -49,7 +62,7 @@ export const Categories: CategoryInfo[] = [
         ImageOff: ScienceOff
     },
     {
-        Name: "Games",
+        Name: "NYTNow",
         ImageOn: TechnologyOn,
         ImageOff: TechnologyOff
     },
@@ -57,5 +70,22 @@ export const Categories: CategoryInfo[] = [
         Name: "Dining",
         ImageOn: HealthOn,
         ImageOff: HealthOff
-    }
+    },
+    {
+        Name: "Books",
+        ImageOn: BookGuideOn,
+        ImageOff: BookGuideOff
+    },
+    {
+        Name: "Games",
+        ImageOn: GameOn,
+        ImageOff: GameOff
+    },
+    {
+        Name: "Climate",
+        ImageOn: WeatherOn,
+        ImageOff: WeatherOff
+    },
+
+
 ];

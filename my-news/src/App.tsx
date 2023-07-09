@@ -138,6 +138,9 @@ const App: React.FC = () => {
                   if (category === "Favourites") {
                     return isFavourite(article.id);
                   }
+                  if (category === "Today"){
+                    return article.pub_date.getDay() === new Date().getDay();
+                  }
                   return (
                     (article.category === category || category === "Home") &&
                     (article.headline
@@ -164,7 +167,8 @@ const App: React.FC = () => {
         {errorMessages !== "" && (
           <div className="error">
             {errorMessages +
-              "if this is your first time opening the app, you might need to get temporary authorization from the proxy server, just visit the page https://cors-anywhere.herokuapp.com/corsdemo"}
+              "if this is your first time opening the app, you might need to get temporary authorization from the proxy server, just visit the page "}
+              <a href="https://cors-anywhere.herokuapp.com/corsdemo">https://cors-anywhere.herokuapp.com/corsdemo</a>
           </div>
         )}
       </div>
