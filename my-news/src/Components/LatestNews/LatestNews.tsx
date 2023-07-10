@@ -6,17 +6,18 @@ import NewsView from "../News";
 
 interface LatestNewsProps {
   NewsList: News[];
-  getMoreNews: () => void;
   category: string;
 }
-export const LatestNews = ({ NewsList, getMoreNews, category }: LatestNewsProps) => {
+export const LatestNews = ({ NewsList, category }: LatestNewsProps) => {
   const [selectedNews, setSelectedNews] = useState<News[]>([]);
   const [page, setPage] = useState<number>(1);
   const [maxPage, setMaxPage] = useState<number>(NewsList.length ? NewsList.length / 20 : 2);
   const [loading, setLoading] = useState<boolean>(false);
   
 
-  //currently the initial load is 500 articles if not more, so I consider it sufficient enough, but later I might make another call
+  //currently the initial load is 2000 articles if not more, so I consider it sufficient enough, but later I might make another call
+  //due to not wanting to make too many calls to the API I will just call it five times at the start
+
 
   useEffect(() => {
     setPage(1);
@@ -41,7 +42,7 @@ export const LatestNews = ({ NewsList, getMoreNews, category }: LatestNewsProps)
   }, [page]);
 
   useEffect(() => {
-    if (page >= maxPage && !loading)
+    if (page > maxPage && !loading)
       setLoading(true);
   }, [page]);
 

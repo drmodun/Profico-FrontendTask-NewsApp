@@ -1,4 +1,4 @@
-import React, { EventHandler, useEffect } from 'react'
+import React, { EventHandler, useEffect, useState} from 'react'
 import { ArticleView, Props } from '../../Types/Interfaces'
 import BookmarkOn from '../../Assets/Bookmark-On.png'
 import BookmarkOff from '../../Assets/Bookmark-Off.png'
@@ -6,7 +6,7 @@ import BookmarkOff from '../../Assets/Bookmark-Off.png'
 
 export const ArticleComponent = ({Article, toggleBookmark, isFavourite} : Props) => {
     const [bookmark, setBookmark] : [boolean,React.Dispatch<React.SetStateAction<boolean>>]
-     = React.useState(isFavourite);
+     = useState(isFavourite);
 
     function toggleBookmarkLocal() : void {
         if (bookmark) {

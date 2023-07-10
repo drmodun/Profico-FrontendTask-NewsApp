@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC, useState, useEffect, Dispatch, SetStateAction } from "react";	
 import ArticleComponent from "./Components/Article";
 import { getNYTArchiveData } from "./APIActions/NYTApiActions";
 
@@ -23,78 +23,68 @@ import MenuOff from "./Assets/svg/MenuOff.svg";
 
 const EmptyArticle: ArticleView[] = [];
 const EmptyNews: News[] = [];
-const App: React.FC = () => {
-  const [articles, setArticles] = React.useState(EmptyArticle);
-  const [news, setNews] = React.useState(EmptyNews);
-  const [currentMonth, setCurrentMonth] = React.useState(0);
+const App: FC = () => {
+  const [articles, setArticles] = useState(EmptyArticle);
+  const [news, setNews] = useState(EmptyNews);
+  const [currentMonth, setCurrentMonth] = useState(0);
   const [search, setSearch]: [
     string,
-    React.Dispatch<React.SetStateAction<string>>
-  ] = React.useState("");
+    Dispatch<SetStateAction<string>>
+  ] = useState("");
 
   const [menu, setMenu]: [
     boolean,
-    React.Dispatch<React.SetStateAction<boolean>>
-  ] = React.useState(false);
+    Dispatch<SetStateAction<boolean>>
+  ] = useState(false);
 
   const [errorMessages, setErrorMessages]: [
     string,
-    React.Dispatch<React.SetStateAction<string>>
-  ] = React.useState("");
+    Dispatch<SetStateAction<string>>
+  ] = useState("");
 
   const [category, setCategory]: [
     string,
-    React.Dispatch<React.SetStateAction<string>>
-  ] = React.useState("Home");
+    Dispatch<SetStateAction<string>>
+  ] = useState("Home");
 
   const [selected, setSelected]: [
     string,
-    React.Dispatch<React.SetStateAction<string>>
-  ] = React.useState("All");
+    Dispatch<SetStateAction<string>>
+  ] = useState("All");
 
-  const [favouriteArticles, setFavouriteArticles] = React.useState(favourites);
-
-
-  function getMoreNews (): void {
-    const getMonth = new Date().getMonth();
-    const fetchData = async (): Promise<void> => {
-      console.log(getMonth-currentMonth);
-      const data: ResponseNYT | null = await getNYTArchiveData(getMonth-currentMonth);
-      setCurrentMonth(prev=>prev+1);
-      if (data === null) {
-        return;
-      }
-      const articles: ArticleView[] = data.response.docs.map(
-        (article: Article) => ArticleToArticleView(article)
-      );
-      const news: News[] = data.response.docs.map((article: Article) =>
-        ArticleToNews(article)
-      );
-      setArticles((prev)=>[...prev,...articles]);
-      setNews((prev)=>[...prev,...news]);
-    };
-    fetchData();
-  }
+  const [favouriteArticles, setFavouriteArticles] = useState(favourites);
 
 
-  React.useEffect(() => {
+
+
+  useEffect(() => {
     const fetchData = async (): Promise<void> => {
       if (currentMonth > 12) {
         //I think it would be too much to load articles before 2023
         return;
       }
       const data: ResponseNYT | null = await getNYTArchiveData();
+      const data2: ResponseNYT | null = await getNYTArchiveData(6);
+      const data3: ResponseNYT | null = await getNYTArchiveData(4);
+      const data4: ResponseNYT | null = await getNYTArchiveData(2);
       console.log(data);
-      if (data === null) {
+      if (data === null || data2 === null || data3 === null || data4 === null) {
         setErrorMessages("There was an error fetching the data");
         return;
       }
-      const articles: ArticleView[] = data.response.docs.map(
+      const articles: ArticleView[] = data.response.docs.concat(data2.response.docs)
+      .map(
         (article: Article) => ArticleToArticleView(article)
       );
-      const news: News[] = data.response.docs.map((article: Article) =>
+     const allData = [...data.response.docs, ...data2.response.docs, ...data3.response.docs, ...data4.response.docs];
+      const news: News[] = allData.map((article: Article) =>
         ArticleToNews(article)
       );
+
+      //this way there may be a lot of calls but it is the only time we get the data
+      //the sample is big enough for the entire application to work
+      //In a real app likely the data would be fetched in a different way and there would be more dynamic calls but this should be enough for this task
+
       setArticles(articles);
       setNews(
         news.sort((a, b) => {
@@ -105,17 +95,17 @@ const App: React.FC = () => {
     fetchData();
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     localStorage.setItem("favourites", JSON.stringify(favouriteArticles));
   }, [favouriteArticles]);
 
-  React.useEffect(() => { 
+  useEffect(() => { 
     setSelected(window.innerWidth > 900 ? "All" : "Menu");
     setMenu(window.innerWidth > 900 ? false : true);
   }
   , []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleResize = () => {
       setSelected(window.innerWidth > 900 ? "All" : "Menu");
       setMenu(window.innerWidth > 900 ? false : true);
@@ -273,7 +263,7 @@ const App: React.FC = () => {
                     (article.category === category || category === "Home" || category === "Favourites" || category === "Today")
                   );
                 })
-                } getMoreNews={getMoreNews} 
+                }
                 category={category}
                 />}
               </div>
@@ -288,7 +278,6 @@ const App: React.FC = () => {
                   );
                 })
                 }
-                getMoreNews={getMoreNews}
                 category={category}
               />
             ) : null}
@@ -296,11 +285,8 @@ const App: React.FC = () => {
         </div>
         {errorMessages !== "" && (
           <div className="error">
-            {errorMessages +
-              "if this is your first time opening the app, you might need to get temporary authorization from the proxy server, just visit the page "}
-            <a href="https://cors-anywhere.herokuapp.com/corsdemo">
-              https://cors-anywhere.herokuapp.com/corsdemo
-            </a>
+            {errorMessages
+           }
           </div>
         )}
       </div>
