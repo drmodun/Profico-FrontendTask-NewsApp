@@ -73,12 +73,12 @@ export const LatestNews = ({ NewsList, category }: LatestNewsProps) => {
   return (
     <div className="latest-news">
       <div className="title-section">
-        <img src={LatestNewsSvg} alt="" />
+        <img src={LatestNewsSvg} alt="news" />
         <span>Latest News</span>
       </div>
       <div id="container" ref={containerRef} className="news-container">
-        {selectedNews.map((news) => (
-          <NewsView {...news} />
+        {selectedNews.map((news, i) => (
+          <NewsView {...news} key={i} />
         ))}
         {loading && <div className="loading">Loading...</div>}
       </div>

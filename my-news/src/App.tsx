@@ -213,6 +213,7 @@ const App: FC = () => {
                     ImageOn={categoryToMap.ImageOn}
                     ImageOff={categoryToMap.ImageOff}
                     setCategory={handleSetCategory}
+                    key={categoryToMap.Name}
                     isActive={categoryToMap.Name === category}
                   />
                 ))}
@@ -258,6 +259,7 @@ const App: FC = () => {
                   .map((article: ArticleView) => (
                     <ArticleComponent
                       Article={article}
+                      key={article.id}
                       toggleBookmark={toggleBookmark}
                       isFavourite={isFavourite(article.id)}
                     />
