@@ -26,66 +26,64 @@ import TodayOff from "../Assets/svg/TodayOff.svg";
 //later add when I have more icons
 
 export const Categories: CategoryInfo[] = [
-    {
-        Name: "Home",
-        ImageOn: HomeOn,
-        ImageOff: HomeOff
-    },
-    {
-        Name: "Favourites",
-        ImageOn: BookmarkOn,
-        ImageOff: BookmarkOff
-    },
-    {
-        Name: "Today",
-        ImageOn: TodayOn,
-        ImageOff: TodayOff
-    },
-    {
-        Name: "Business",
-        ImageOn: BusinessOn,
-        ImageOff: BusinessOff
-    },
-    {
-        Name: "Sports",
-        ImageOn: SportsOn,
-        ImageOff: SportsOff
-    },
-    {
-        Name: "Foreign",
-        ImageOn: ForeignOn,
-        ImageOff: ForeignOff
-    },
-    {
-        Name: "Science",
-        ImageOn: ScienceOn,
-        ImageOff: ScienceOff
-    },
-    {
-        Name: "NYTNow",
-        ImageOn: TechnologyOn,
-        ImageOff: TechnologyOff
-    },
-    {
-        Name: "Dining",
-        ImageOn: HealthOn,
-        ImageOff: HealthOff
-    },
-    {
-        Name: "Books",
-        ImageOn: BookGuideOn,
-        ImageOff: BookGuideOff
-    },
-    {
-        Name: "Games",
-        ImageOn: GameOn,
-        ImageOff: GameOff
-    },
-    {
-        Name: "Climate",
-        ImageOn: WeatherOn,
-        ImageOff: WeatherOff
-    },
-
-
+  {
+    Name: "Home",
+    ImageOn: HomeOn,
+    ImageOff: HomeOff,
+  },
+  {
+    Name: "Favourites",
+    ImageOn: BookmarkOn,
+    ImageOff: BookmarkOff,
+  },
+  {
+    Name: "Today",
+    ImageOn: TodayOn,
+    ImageOff: TodayOff,
+  },
+  {
+    Name: "Business",
+    ImageOn: BusinessOn,
+    ImageOff: BusinessOff,
+  },
+  {
+    Name: "Sports",
+    ImageOn: SportsOn,
+    ImageOff: SportsOff,
+  },
+  {
+    Name: "Foreign",
+    ImageOn: ForeignOn,
+    ImageOff: ForeignOff,
+  },
+  {
+    Name: "Science",
+    ImageOn: ScienceOn,
+    ImageOff: ScienceOff,
+  },
+  {
+    Name: "NYTNow",
+    ImageOn: TechnologyOn,
+    ImageOff: TechnologyOff,
+  },
+  {
+    Name: "Dining",
+    ImageOn: HealthOn,
+    ImageOff: HealthOff,
+  },
+  {
+    Name: "Books",
+    ImageOn: BookGuideOn,
+    ImageOff: BookGuideOff,
+  },
+  {
+    Name: "Games",
+    ImageOn: GameOn,
+    ImageOff: GameOff,
+  },
+  {
+    Name: "Climate",
+    ImageOn: WeatherOn,
+    ImageOff: WeatherOff,
+  },
 ];

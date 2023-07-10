@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, Dispatch, SetStateAction } from "react";	
+import { FC, useState, useEffect, Dispatch, SetStateAction } from "react";
 import ArticleComponent from "./Components/Article";
 import { getNYTArchiveData } from "./APIActions/NYTApiActions";
 
@@ -27,36 +27,26 @@ const App: FC = () => {
   const [articles, setArticles] = useState(EmptyArticle);
   const [news, setNews] = useState(EmptyNews);
   const [currentMonth, setCurrentMonth] = useState(0);
-  const [search, setSearch]: [
-    string,
-    Dispatch<SetStateAction<string>>
-  ] = useState("");
+  const [search, setSearch]: [string, Dispatch<SetStateAction<string>>] =
+    useState("");
 
-  const [menu, setMenu]: [
-    boolean,
-    Dispatch<SetStateAction<boolean>>
-  ] = useState(false);
+  const [menu, setMenu]: [boolean, Dispatch<SetStateAction<boolean>>] =
+    useState(false);
 
   const [errorMessages, setErrorMessages]: [
     string,
     Dispatch<SetStateAction<string>>
   ] = useState("");
 
-  const [category, setCategory]: [
-    string,
-    Dispatch<SetStateAction<string>>
-  ] = useState("Home");
+  const [category, setCategory]: [string, Dispatch<SetStateAction<string>>] =
+    useState("Home");
 
-  const [selected, setSelected]: [
-    string,
-    Dispatch<SetStateAction<string>>
-  ] = useState("All");
+  const [selected, setSelected]: [string, Dispatch<SetStateAction<string>>] =
+    useState("All");
 
   const [favouriteArticles, setFavouriteArticles] = useState(favourites);
 
-
-
-
+  //fecthing data from the NYT API
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       if (currentMonth > 12) {
@@ -72,11 +62,15 @@ const App: FC = () => {
         setErrorMessages("There was an error fetching the data");
         return;
       }
-      const articles: ArticleView[] = data.response.docs.concat(data2.response.docs)
-      .map(
-        (article: Article) => ArticleToArticleView(article)
-      );
-     const allData = [...data.response.docs, ...data2.response.docs, ...data3.response.docs, ...data4.response.docs];
+      const articles: ArticleView[] = data.response.docs
+        .concat(data2.response.docs)
+        .map((article: Article) => ArticleToArticleView(article));
+      const allData = [
+        ...data.response.docs,
+        ...data2.response.docs,
+        ...data3.response.docs,
+        ...data4.response.docs,
+      ];
       const news: News[] = allData.map((article: Article) =>
         ArticleToNews(article)
       );
@@ -99,28 +93,24 @@ const App: FC = () => {
     localStorage.setItem("favourites", JSON.stringify(favouriteArticles));
   }, [favouriteArticles]);
 
-  useEffect(() => { 
+  useEffect(() => {
     setSelected(window.innerWidth > 900 ? "All" : "Menu");
     setMenu(window.innerWidth > 900 ? false : true);
-  }
-  , []);
+  }, []);
 
+  //logic to get page width
   useEffect(() => {
     const handleResize = () => {
       setSelected(window.innerWidth > 900 ? "All" : "Menu");
       setMenu(window.innerWidth > 900 ? false : true);
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
-
-
   }, []);
-
-
 
   function toggleBookmark(isBookmarked: boolean, article: ArticleView): void {
     isBookmarked
@@ -139,6 +129,17 @@ const App: FC = () => {
       }).length > 0
     );
   }
+
+  function handleSetCategory(category: string): void {
+    setCategory(category);
+    if (selected === "Menu") {
+      setMenu((prev) => !prev);
+      setSelected("Featured");
+    }
+  }
+
+  //the jsx may have been simplified as more divs could have been made into components and used instead
+  //, but most of them were only used once and it is a pretty small app so I think this is simpler, the reusable components are indeed reused
 
   return (
     <div className="App">
@@ -187,21 +188,22 @@ const App: FC = () => {
         </div>
         <div className="divider"></div>
         <div className="body">
-          { selected === "Featured" || selected === "Latest" ? (
+          {selected === "Featured" || selected === "Latest" ? (
             <div className="selector">
-            <button
-              onClick={() => setSelected("Featured")}
-              className={selected === "Featured" ? "active-option" : "option"}
-            >
-              Featured
-            </button>
-            <button
-              onClick={() => setSelected("Latest")}
-              className={selected === "Latest" ? "active-option" : "option"}
-            >
-              Latest
-            </button>
-          </div>) : null}
+              <button
+                onClick={() => setSelected("Featured")}
+                className={selected === "Featured" ? "active-option" : "option"}
+              >
+                Featured
+              </button>
+              <button
+                onClick={() => setSelected("Latest")}
+                className={selected === "Latest" ? "active-option" : "option"}
+              >
+                Latest
+              </button>
+            </div>
+          ) : null}
           {selected === "Menu" || selected === "All" ? (
             <div className="category-selector">
               <div className="categories">
@@ -210,7 +212,7 @@ const App: FC = () => {
                     Name={categoryToMap.Name}
                     ImageOn={categoryToMap.ImageOn}
                     ImageOff={categoryToMap.ImageOff}
-                    setCategory={setCategory}
+                    setCategory={handleSetCategory}
                     isActive={categoryToMap.Name === category}
                   />
                 ))}
@@ -224,16 +226,22 @@ const App: FC = () => {
                 {articles
                   .filter((article) => {
                     if (category === "Favourites") {
-                      return isFavourite(article.id) && (article.headline
-                        .toLowerCase()
-                        .includes(search.toLowerCase()) ||
-                        search === "")                      ;
+                      return (
+                        isFavourite(article.id) &&
+                        (article.headline
+                          .toLowerCase()
+                          .includes(search.toLowerCase()) ||
+                          search === "")
+                      );
                     }
                     if (category === "Today") {
-                      return article.pub_date.getDay() === new Date().getDay() && (article.headline
-                        .toLowerCase()
-                        .includes(search.toLowerCase()) ||
-                        search === "")
+                      return (
+                        article.pub_date.getDay() === new Date().getDay() &&
+                        (article.headline
+                          .toLowerCase()
+                          .includes(search.toLowerCase()) ||
+                          search === "")
+                      );
                     }
                     return (
                       (article.category === category || category === "Home") &&
@@ -254,41 +262,42 @@ const App: FC = () => {
                       isFavourite={isFavourite(article.id)}
                     />
                   ))}
-                {selected === "All" && <LatestNews NewsList={news
-                .filter((article) => {
-                  if (category === "Today") {
-                    return article.date.getDay() === new Date().getDay();
-                  }
-                  return (
-                    (article.category === category || category === "Home" || category === "Favourites" || category === "Today")
-                  );
-                })
-                }
-                category={category}
-                />}
+                {selected === "All" && (
+                  <LatestNews
+                    NewsList={news.filter((article) => {
+                      if (category === "Today") {
+                        return article.date.getDay() === new Date().getDay();
+                      }
+                      return (
+                        article.category === category ||
+                        category === "Home" ||
+                        category === "Favourites" ||
+                        category === "Today"
+                      );
+                    })}
+                    category={category}
+                  />
+                )}
               </div>
             ) : selected === "Latest" ? (
-              <LatestNews NewsList={news
-                .filter((article) => {
+              <LatestNews
+                NewsList={news.filter((article) => {
                   if (category === "Today") {
                     return article.date.getDay() === new Date().getDay();
                   }
                   return (
-                    (article.category === category || category === "Home" || category === "Favourites" || category === "Today")
+                    article.category === category ||
+                    category === "Home" ||
+                    category === "Favourites" ||
+                    category === "Today"
                   );
-                })
-                }
+                })}
                 category={category}
               />
             ) : null}
           </div>
         </div>
-        {errorMessages !== "" && (
-          <div className="error">
-            {errorMessages
-           }
-          </div>
-        )}
+        {errorMessages !== "" && <div className="error">{errorMessages}</div>}
       </div>
     </div>
   );

@@ -6,8 +6,8 @@ const currentMonth: number = currentDate.getMonth() + 1;
 const currentYear: number = currentDate.getFullYear();
 
 const proxyUrl: string = "https://corsproxy.io/?";
-//gonna use proxy to bypass cors, but later might just use insecure chrome startup
-//somtimes the proxy doesn't work, so I'll have to use the insecure chrome startup in the future
+//the used cors proxy, cors-anywhere.herokuapp.com is an alternative if this doesnt work
+//, but you need to visit the website and get demo access to use it
 
 export async function getNYTArchiveData(
   month: number = currentMonth,
@@ -18,8 +18,6 @@ export async function getNYTArchiveData(
     console.log(proxyUrl + apiUrl);
    const response = await fetch(proxyUrl + apiUrl);
    const data: object = response.json();
-   console.log(data);
-  console.log(data);
     return data as ResponseNYT;
   } catch (error) {
     console.error(error);
